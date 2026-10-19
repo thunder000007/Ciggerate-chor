@@ -1,0 +1,6 @@
+{
+  "appId": "com.rafid.callbridge",
+  "appName": "Call Bridge",
+  "webDir": "www",
+  "bundledWebRuntime": false
+}
