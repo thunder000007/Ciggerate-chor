@@ -1,0 +1,1 @@
+const fs=require('fs');const path=require('path');fs.mkdirSync('www',{recursive:true});fs.copyFileSync('index.html',path.join('www','index.html'));console.log('Web assets copied to www');
