@@ -1,16 +1,21 @@
 # Call Bridge (separate game branch)
 
-A mobile-first Call Bridge prototype with a playable solo table against three bots, partner teams, a configurable match target, and a private-room UI placeholder.
+A mobile-first Call Bridge prototype with solo play against bots and a Firebase-free local-network multiplayer foundation.
+
+## Multiplayer design
+- One Android phone hosts a local TCP room on port 8765.
+- Up to three other phones can connect over the host phone's Wi-Fi hotspot.
+- No Firebase account or cloud database is required.
+- The host phone's hotspot gateway is commonly 192.168.43.1, but Android vendors can use a different address.
+- Device compatibility and network behavior must be tested on real phones.
 
 ## Current status
-- Solo table: playable prototype with 52 cards, fixed spades trump, follow-suit enforcement, 13 tricks per hand, a bid/call phase, trick winners, and a configurable match target.
-- Teams: seats You + North vs West + East. Each player calls individually; each player's points are calculated from their call and tricks, then partner scores are combined.
-- Bots: automatic calls and a basic trick-aware card strategy; this is not expert-level AI.
-- Online private rooms: **not connected**. A real-time backend and trusted game-state validation are still required before friends can play across phones. A passcode form alone is not multiplayer.
-- Rules: scoring is a documented starter variant, not verified as identical to every local Call Bridge variant. Local variants may differ on minimum calls, penalties, and overtrick scoring.
+- Solo table: playable prototype with a 52-card deck, fixed spades trump, follow-suit enforcement, 13 tricks, bidding and a configurable target.
+- Teams: You + North vs West + East.
+- Bots: basic strategy, not expert-level AI.
+- LAN transport: a native Android TCP socket plugin is injected during APK builds. The four-phone game UI/state relay still needs integration and end-to-end testing; this branch must not yet be described as a finished four-phone multiplayer game.
+- Rules: scoring is a starter variant, not verified as identical to every local Call Bridge variant.
+- APK: GitHub Actions produces a debug APK artifact, not a Play Store release.
 
 ## Build APK
-GitHub Actions workflow `.github/workflows/call-bridge-apk.yml` packages the web app with Capacitor and uploads a debug APK artifact. The APK is not a Play Store release.
-
-## Run locally
-`npm install`, `npm run build`, `npx cap add android`, `npx cap sync android`, then build Android debug APK from the android project.
+The GitHub Actions workflow packages the web app with Capacitor, injects the native LAN socket plugin, and builds a debug APK artifact.
