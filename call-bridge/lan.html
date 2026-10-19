@@ -13,7 +13,7 @@ const suits=['♠','♥','♦','♣'], names=['South','West','North','East'];
 let role='',serverBase='',clientId='',mySeat=0,game=null,loop=null,serverStarted=false,hostBusy=false;
 const $=id=>document.getElementById(id);
 function show(id){['choose','hostSetup','joinSetup','table'].forEach(x=>$(x).classList.toggle('hidden',x!==id))}
-function randId(){return Math.random().toString(36).slice(2)+Date.now().toString(36)}
+window.show=show;function randId(){return Math.random().toString(36).slice(2)+Date.now().toString(36)}
 function deck(){let d=[];for(const s of suits)for(let v=2;v<=14;v++)d.push({s,v});for(let i=d.length-1;i>0;i--){let j=Math.floor(Math.random()*(i+1));[d[i],d[j]]=[d[j],d[i]]}return d}
 function cardName(c){return c.v===14?'A':c.v===13?'K':c.v===12?'Q':c.v===11?'J':String(c.v)}
 function startHost(){role='host';clientId='host';mySeat=0;show('table');$('roleTag').textContent='HOST · SEAT 1';$('tableTitle').textContent='Hotspot table';$('status').textContent='Starting local server…';LocalLan.startServer().then(async r=>{serverStarted=true;serverBase='http://'+r.address+':8765';$('hostInfo').textContent='';game={phase:'lobby',players:[{name:$('hostName').value.trim()||'Host',clientId:'host',cards:[],connected:true},null,null,null],bids:[null,null,null,null],turn:0,trick:[],trickWins:[0,0,0,0],scores:[0,0],target:100,handNo:0,log:['Host server started. Share IP '+r.address+' with friends.']};$('status').textContent='Host IP: '+r.address+' · Share this IP with 3 friends';$('hostInfo').textContent='';render(game);await pushState();loop=setInterval(hostTick,350)}).catch(e=>{$('status').textContent='Could not start local server: '+(e.message||e);});}
